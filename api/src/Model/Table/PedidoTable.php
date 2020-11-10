@@ -44,7 +44,7 @@ class PedidoTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
-        $this->belongsTo('Clientes', [
+        $this->belongsTo('Cliente', [
             'foreignKey' => 'cliente_id',
             'joinType' => 'INNER',
         ]);
@@ -77,7 +77,7 @@ class PedidoTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['cliente_id'], 'Clientes'), ['errorField' => 'cliente_id']);
+        $rules->add($rules->existsIn(['cliente_id'], 'Cliente'), ['errorField' => 'cliente_id']);
 
         return $rules;
     }

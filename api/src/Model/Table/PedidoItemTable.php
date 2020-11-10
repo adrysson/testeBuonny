@@ -44,11 +44,11 @@ class PedidoItemTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
-        $this->belongsTo('Pedidos', [
+        $this->belongsTo('Pedido', [
             'foreignKey' => 'pedido_id',
             'joinType' => 'INNER',
         ]);
-        $this->belongsTo('Produtos', [
+        $this->belongsTo('Produto', [
             'foreignKey' => 'produto_id',
             'joinType' => 'INNER',
         ]);
@@ -83,8 +83,8 @@ class PedidoItemTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['pedido_id'], 'Pedidos'), ['errorField' => 'pedido_id']);
-        $rules->add($rules->existsIn(['produto_id'], 'Produtos'), ['errorField' => 'produto_id']);
+        $rules->add($rules->existsIn(['pedido_id'], 'Pedido'), ['errorField' => 'pedido_id']);
+        $rules->add($rules->existsIn(['produto_id'], 'Produto'), ['errorField' => 'produto_id']);
 
         return $rules;
     }

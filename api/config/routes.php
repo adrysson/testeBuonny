@@ -73,6 +73,11 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->fallbacks();
 });
 
+$routes->prefix('Api/V1', function (RouteBuilder $routes) {
+    $routes->setExtensions('json');
+    $routes->resources('Pedido', ['path' => 'pedidos', 'only' => ['index']]);
+});
+
 /*
  * If you need a different set of middleware or none at all,
  * open new scope and define routes there.
