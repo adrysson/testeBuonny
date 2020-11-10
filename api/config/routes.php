@@ -73,7 +73,7 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->fallbacks();
 });
 
-$routes->prefix('Api/V1', function (RouteBuilder $routes) {
+$routes->prefix('V1', function (RouteBuilder $routes) {
     $routes->setExtensions('json');
     $routes->resources('Pedido', ['path' => 'pedidos', 'only' => ['index']]);
 });
