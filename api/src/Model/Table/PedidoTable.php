@@ -51,6 +51,11 @@ class PedidoTable extends Table
         $this->hasMany('PedidoItem', [
             'foreignKey' => 'pedido_id',
         ]);
+
+        $this->addBehavior('Search.Search');
+
+        $this->searchManager()
+            ->value('cliente_id');
     }
 
     /**

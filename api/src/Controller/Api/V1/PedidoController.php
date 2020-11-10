@@ -20,10 +20,10 @@ class PedidoController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
+        $pedidos = $this->Pedido->find('search', [
             'contain' => ['Cliente'],
-        ];
-        $pedidos = $this->paginate($this->Pedido);
+            'search' => $this->getRequest()->getQueryParams(),
+        ]);
 
         $this->set(compact('pedidos'));
         $this->viewBuilder()->setOption('serialize', ['pedidos']);
