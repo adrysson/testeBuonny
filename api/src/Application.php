@@ -41,6 +41,8 @@ class Application extends BaseApplication
      */
     public function bootstrap(): void
     {
+        $this->addPlugin('Cors');
+
         $this->addPlugin('Search');
 
         // Call parent to load bootstrap from files.
