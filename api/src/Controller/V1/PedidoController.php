@@ -127,11 +127,8 @@ class PedidoController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $pedido = $this->Pedido->get($id);
         if ($this->Pedido->delete($pedido)) {
-            $this->Flash->success(__('The pedido has been deleted.'));
-        } else {
-            $this->Flash->error(__('The pedido could not be deleted. Please, try again.'));
+            return $this->getResponse()->withStringBody(__('Pedido excluído com sucesso'));
         }
-
-        return $this->redirect(['action' => 'index']);
+        return $this->getResponse()->withStatus(500)->withStringBody(__('Devido a um erro não foi possível excluir o pedido, tente novamente'));
     }
 }

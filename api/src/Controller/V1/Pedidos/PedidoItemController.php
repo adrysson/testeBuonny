@@ -106,7 +106,7 @@ class PedidoItemController extends AppController
         $this->request->allowMethod(['delete']);
         $item = $this->PedidoItem->get($id);
         if ($this->PedidoItem->delete($item)) {
-            return $this->getResponse()->withStringBody(__('Item do pedido excluído com sucesso'));
+            return $this->getResponse()->withStatus(204)->withStringBody(__('Item do pedido excluído com sucesso'));
         }
         return $this->getResponse()->withStatus(500)->withStringBody(__('Devido a um erro não foi possível excluir o item do pedido, tente novamente'));
     }
