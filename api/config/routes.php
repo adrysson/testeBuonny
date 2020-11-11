@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Routes configuration.
  *
@@ -41,6 +42,7 @@ use Cake\Routing\RouteBuilder;
  * inconsistently cased URLs when used with `:plugin`, `:controller` and
  * `:action` markers.
  */
+
 /** @var \Cake\Routing\RouteBuilder $routes */
 $routes->setRouteClass(DashedRoute::class);
 
@@ -75,7 +77,9 @@ $routes->scope('/', function (RouteBuilder $builder) {
 
 $routes->prefix('V1', function (RouteBuilder $routes) {
     $routes->setExtensions('json');
-    $routes->resources('Pedido', ['path' => 'pedidos', 'only' => ['index', 'create']]);
+    $routes->resources('Pedido', ['path' => 'pedidos', 'only' => ['index', 'create']], function (RouteBuilder $routes) {
+        $routes->resources('PedidoItem', ['path' => 'itens', 'prefix' => 'Pedidos' , 'only' => ['index']]);
+    });
     $routes->resources('Cliente', ['path' => 'clientes', 'only' => ['index']]);
 });
 
