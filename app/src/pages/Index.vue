@@ -39,7 +39,10 @@ export default {
   data () {
     return {
       form: {
-        cliente_id: '',
+        cliente_id: {
+          value: '',
+          label: 'Todos'
+        },
         valor_min: '',
         valor_max: ''
       },
@@ -50,12 +53,17 @@ export default {
   },
   computed: {
     options () {
-      return this.clientes.map((cliente) => {
+      const options = [{
+        value: '',
+        label: 'Todos'
+      }]
+      const clientes = this.clientes.map((cliente) => {
         return {
           value: cliente.id,
           label: cliente.nome
         }
       })
+      return options.concat(clientes)
     }
   },
   async mounted () {
