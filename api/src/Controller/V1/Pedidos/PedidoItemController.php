@@ -52,19 +52,21 @@ class PedidoItemController extends AppController
      */
     public function add()
     {
-        $pedidoItem = $this->PedidoItem->newEmptyEntity();
+        $item = $this->PedidoItem->newEmptyEntity();
         if ($this->request->is('post')) {
-            $pedidoItem = $this->PedidoItem->patchEntity($pedidoItem, $this->request->getData());
-            if ($this->PedidoItem->save($pedidoItem)) {
-                $this->Flash->success(__('The pedido item has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+            $item = $this->PedidoItem->patchEntity($item, $this->request->withData('pedido_id', $this->getRequest()->getParam('pedido_id'))->getData());
+            if ($this->PedidoItem->save($item)) {
+                return $this->getResponse()->withStringBody(__('Item do pedido salvo com sucesso'));
             }
-            $this->Flash->error(__('The pedido item could not be saved. Please, try again.'));
+            if (!empty($item->getErrors())) {
+                return $this
+                    ->getResponse()
+                    ->withStatus(422)
+                    ->withType('application/json')
+                    ->withStringBody(json_encode($item->getErrors()));
+            }
         }
-        $pedido = $this->PedidoItem->Pedido->find('list', ['limit' => 200]);
-        $produto = $this->PedidoItem->Produto->find('list', ['limit' => 200]);
-        $this->set(compact('pedidoItem', 'pedido', 'produto'));
+        return $this->getResponse()->withStatus(500)->withStringBody(__('Devido a um erro não foi possível salvar o item do pedido, tente novamente'));
     }
 
     /**

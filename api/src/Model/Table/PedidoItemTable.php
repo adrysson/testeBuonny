@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Model\Table;
@@ -65,6 +66,16 @@ class PedidoItemTable extends Table
         $validator
             ->nonNegativeInteger('id')
             ->allowEmptyString('id', null, 'create');
+
+        $validator
+            ->nonNegativeInteger('pedido_id')
+            ->requirePresence('pedido_id', 'create')
+            ->notEmptyString('pedido_id', null, 'create');
+
+        $validator
+            ->nonNegativeInteger('produto_id')
+            ->requirePresence('produto_id', 'create')
+            ->notEmptyString('produto_id', null, 'create');
 
         $validator
             ->nonNegativeInteger('quantidade')
