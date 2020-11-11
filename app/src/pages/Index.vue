@@ -3,17 +3,21 @@
     <div class="row justify-center">
       <h1 class="text-h4">Pedidos</h1>
     </div>
-    <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
-      <div class="row justify-center">
-        <q-select
-          outlined
-          v-model="model"
-          :options="options"
-          label="Clientes"
-          class="q-ma-sm"
-        />
-        <q-input filled type="number" v-model="name" label="Valor" class="q-ma-sm" />
-        <q-input filled type="number" v-model="name" label="Até" class="q-ma-sm" />
+    <q-form
+      @submit="onSubmit"
+      @reset="onReset"
+      class="q-gutter-md"
+    >
+      <q-select
+        outlined
+        v-model="form.client_id"
+        :options="options"
+        label="Clientes"
+        class="q-ma-sm"
+      />
+      <div class="flex flex-center">
+        <q-input filled type="number" v-model="form.valor_min" label="Valor" class="q-ma-sm" />
+        <q-input filled type="number" v-model="form.valor_max" label="Até" class="q-ma-sm" />
       </div>
       <div class="row justify-center">
         <q-btn label="Pesquisar" type="submit" color="primary" />
@@ -29,17 +33,43 @@
   </q-page>
 </template>
 
-<script lang="ts">
-import { defineComponent } from '@vue/composition-api'
-
-export default defineComponent({
+<script>
+export default {
   name: 'PageIndex',
   data () {
     return {
+      form: {
+        client_id: '',
+        valor_min: '',
+        valor_max: ''
+      },
       clientes: []
     }
   },
-  mounted () {
+  computed: {
+    options () {
+      return this.clientes.map((cliente) => {
+        return cliente.nome
+      })
+    }
+  },
+  async mounted () {
+    this.$q.loading.show({
+      delay: 400
+    })
+    const response = await this.$axios.get('/clientes')
+    this.$q.loading.hide()
+    this.clientes = response.data.clientes
+  },
+  methods: {
+    onSubmit () {
+      console.log('submit')
+    },
+    onReset () {
+      Object.keys(this.form).forEach((input) => {
+        this.form[input] = ''
+      })
+    }
   }
-})
+}
 </script>
