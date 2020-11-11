@@ -1,9 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller\V1;
 
 use App\Controller\AppController;
+use App\Model\Entity\Pedido;
 
 /**
  * Pedido Controller
@@ -20,10 +22,29 @@ class PedidoController extends AppController
      */
     public function index()
     {
+        $params = $this->getRequest()->getQueryParams();
+
         $pedidos = $this->Pedido->find('search', [
             'contain' => ['Cliente'],
-            'search' => $this->getRequest()->getQueryParams(),
+            'search' => $params,
         ]);
+
+        // Filtro pra valor mínimo e máximo (para cliente está na model)
+        if ((isset($params['valor_min']) && !empty($params['valor_min'])) || (isset($params['valor_max']) && !empty($params['valor_max']))) {
+            $pedidos = $pedidos->filter(function (Pedido $pedido) use ($params) {
+                if (isset($params['valor_min']) && !empty($params['valor_min'])) {
+                    if ($pedido->preco_total < $params['valor_min']) {
+                        return false;
+                    }
+                }
+                if (isset($params['valor_max']) && !empty($params['valor_max'])) {
+                    if ($pedido->preco_total > $params['valor_max']) {
+                        return false;
+                    }
+                }
+                return true;
+            });
+        };
 
         $this->set(compact('pedidos'));
         $this->viewBuilder()->setOption('serialize', ['pedidos']);
