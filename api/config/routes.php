@@ -81,6 +81,7 @@ $routes->prefix('V1', function (RouteBuilder $routes) {
         $routes->resources('PedidoItem', ['path' => 'itens', 'prefix' => 'Pedidos' , 'only' => ['index', 'create', 'delete']]);
     });
     $routes->resources('Cliente', ['path' => 'clientes', 'only' => ['index']]);
+    $routes->resources('Produto', ['path' => 'produtos', 'only' => ['index']]);
 });
 
 /*
