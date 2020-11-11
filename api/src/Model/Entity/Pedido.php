@@ -1,9 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
+use Cake\ORM\TableRegistry;
 
 /**
  * Pedido Entity
@@ -30,4 +32,17 @@ class Pedido extends Entity
         'cliente' => true,
         'pedido_item' => true,
     ];
+
+    protected $_virtual = ['preco_total'];
+
+    protected function _getPrecoTotal()
+    {
+        $query = TableRegistry::getTableLocator()->get('PedidoItem')->find('all', [
+            'conditions' => [
+                'pedido_id' => $this->id,
+            ],
+        ]);
+        $result = $query->select(['preco_total' => $query->contain('Produto')->func()->sum('Produto.preco')])->first();
+        return $result->preco_total;
+    }
 }
