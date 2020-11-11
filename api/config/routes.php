@@ -76,6 +76,7 @@ $routes->scope('/', function (RouteBuilder $builder) {
 $routes->prefix('V1', function (RouteBuilder $routes) {
     $routes->setExtensions('json');
     $routes->resources('Pedido', ['path' => 'pedidos', 'only' => ['index', 'create']]);
+    $routes->resources('Cliente', ['path' => 'clientes', 'only' => ['index']]);
 });
 
 /*
