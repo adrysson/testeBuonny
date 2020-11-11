@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Model\Table;
@@ -50,6 +51,12 @@ class PedidoTable extends Table
         ]);
         $this->hasMany('PedidoItem', [
             'foreignKey' => 'pedido_id',
+        ]);
+        $this->belongsToMany('Produto', [
+            'propertyName' => 'produtos',
+            'joinTable' => 'pedido_item',
+            'foreignKey' => 'pedido_id',
+            'targetForeignKey' => 'produto_id'
         ]);
 
         $this->addBehavior('Search.Search');
