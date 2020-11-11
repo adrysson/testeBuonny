@@ -77,6 +77,11 @@ class PedidoTable extends Table
             ->nonNegativeInteger('id')
             ->allowEmptyString('id', null, 'create');
 
+        $validator
+            ->nonNegativeInteger('cliente_id')
+            ->requirePresence('cliente_id', 'create')
+            ->notEmptyString('cliente_id', null, 'create');
+
         return $validator;
     }
 

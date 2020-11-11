@@ -77,14 +77,17 @@ class PedidoController extends AppController
         if ($this->request->is('post')) {
             $pedido = $this->Pedido->patchEntity($pedido, $this->request->getData());
             if ($this->Pedido->save($pedido)) {
-                $this->Flash->success(__('The pedido has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+                return $this->getResponse()->withStringBody(__('Pedido salvo com sucesso'));
             }
-            $this->Flash->error(__('The pedido could not be saved. Please, try again.'));
+            if (!empty($pedido->getErrors())) {
+                return $this
+                    ->getResponse()
+                    ->withStatus(422)
+                    ->withType('application/json')
+                    ->withStringBody(json_encode($pedido->getErrors()));
+            }
         }
-        $clientes = $this->Pedido->Cliente->find('list', ['limit' => 200]);
-        $this->set(compact('pedido', 'clientes'));
+        return $this->getResponse()->withStatus(500)->withStringBody(__('Devido a um erro não foi possível salvar o pedido, tente novamente'));
     }
 
     /**
