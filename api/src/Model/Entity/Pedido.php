@@ -43,6 +43,9 @@ class Pedido extends Entity
             ],
         ]);
         $result = $query->select(['preco_total' => $query->contain('Produto')->func()->sum('Produto.preco')])->first();
-        return $result->preco_total;
+        if ($result->preco_total) {
+            return $result->preco_total;
+        }
+        return 0;
     }
 }
