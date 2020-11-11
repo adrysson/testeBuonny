@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Controller\V1\Pedidos;
+namespace App\Controller\V1;
 
 use App\Controller\AppController;
 
@@ -14,24 +14,6 @@ use App\Controller\AppController;
 class PedidoItemController extends AppController
 {
     /**
-     * Index method
-     *
-     * @return \Cake\Http\Response|null|void Renders view
-     */
-    public function index()
-    {
-        $itens = $this->PedidoItem->find('all', [
-            'contain' => ['Pedido', 'Produto'],
-            'conditions' => [
-                'pedido_id' => $this->getRequest()->getParam('pedido_id'),
-            ],
-        ]);
-
-        $this->set(compact('itens'));
-        $this->viewBuilder()->setOption('serialize', ['itens']);
-    }
-
-    /**
      * View method
      *
      * @param string|null $id Pedido Item id.
@@ -40,11 +22,12 @@ class PedidoItemController extends AppController
      */
     public function view($id = null)
     {
-        $pedidoItem = $this->PedidoItem->get($id, [
+        $item = $this->PedidoItem->get($id, [
             'contain' => ['Pedido', 'Produto'],
         ]);
 
-        $this->set(compact('pedidoItem'));
+        $this->set(compact('item'));
+        $this->viewBuilder()->setOption('serialize', ['item']);
     }
 
     /**
@@ -56,7 +39,7 @@ class PedidoItemController extends AppController
     {
         $item = $this->PedidoItem->newEmptyEntity();
         if ($this->request->is('post')) {
-            $item = $this->PedidoItem->patchEntity($item, $this->request->withData('pedido_id', $this->getRequest()->getParam('pedido_id'))->getData());
+            $item = $this->PedidoItem->patchEntity($item, $this->request->getData());
             if ($this->PedidoItem->save($item)) {
                 return $this->getResponse()->withStringBody(__('Item do pedido salvo com sucesso'));
             }
@@ -80,18 +63,21 @@ class PedidoItemController extends AppController
      */
     public function edit($id = null)
     {
-        $item = $this->PedidoItem->get($id, [
-            'contain' => [],
-        ]);
+        $item = $this->PedidoItem->get($id);
         if ($this->request->is('put')) {
             $item = $this->PedidoItem->patchEntity($item, $this->request->getData());
             if ($this->PedidoItem->save($item)) {
-                $this->Flash->success(__('The pedido item has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+                return $this->getResponse()->withStringBody(__('Item do pedido salvo com sucesso'));
             }
-            $this->Flash->error(__('The pedido item could not be saved. Please, try again.'));
+            if (!empty($item->getErrors())) {
+                return $this
+                    ->getResponse()
+                    ->withStatus(422)
+                    ->withType('application/json')
+                    ->withStringBody(json_encode($item->getErrors()));
+            }
         }
+        return $this->getResponse()->withStatus(500)->withStringBody(__('Devido a um erro não foi possível salvar o item do pedido, tente novamente'));
     }
 
     /**

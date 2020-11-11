@@ -78,8 +78,9 @@ $routes->scope('/', function (RouteBuilder $builder) {
 $routes->prefix('V1', function (RouteBuilder $routes) {
     $routes->setExtensions('json');
     $routes->resources('Pedido', ['path' => 'pedidos', 'only' => ['index', 'create']], function (RouteBuilder $routes) {
-        $routes->resources('PedidoItem', ['path' => 'itens', 'prefix' => 'Pedidos' , 'only' => ['index', 'create', 'delete']]);
+        $routes->resources('PedidoItem', ['path' => 'itens', 'prefix' => 'Pedidos', 'only' => ['index']]);
     });
+    $routes->resources('PedidoItem', ['path' => 'pedidos-itens', 'only' => ['create', 'update', 'view', 'delete']]);
     $routes->resources('Cliente', ['path' => 'clientes', 'only' => ['index']]);
     $routes->resources('Produto', ['path' => 'produtos', 'only' => ['index']]);
 });
