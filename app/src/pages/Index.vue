@@ -10,7 +10,7 @@
     >
       <q-select
         outlined
-        v-model="form.client_id"
+        v-model="form.cliente_id"
         :options="options"
         label="Clientes"
         class="q-ma-sm"
@@ -39,36 +39,49 @@ export default {
   data () {
     return {
       form: {
-        client_id: '',
+        cliente_id: '',
         valor_min: '',
         valor_max: ''
       },
-      clientes: []
+      clientes: [],
+      pedidos: [],
+      formSubmit: false
     }
   },
   computed: {
     options () {
       return this.clientes.map((cliente) => {
-        return cliente.nome
+        return {
+          value: cliente.id,
+          label: cliente.nome
+        }
       })
     }
   },
   async mounted () {
-    this.$q.loading.show({
-      delay: 400
-    })
     const response = await this.$axios.get('/clientes')
-    this.$q.loading.hide()
     this.clientes = response.data.clientes
   },
   methods: {
-    onSubmit () {
-      console.log('submit')
+    async onSubmit () {
+      const queryParams = this.getQueryParams()
+      const response = await this.$axios.get(`/pedidos${queryParams}`)
+      this.pedidos = response.data.pedidos
+      this.formSubmit = true
     },
     onReset () {
       Object.keys(this.form).forEach((input) => {
         this.form[input] = ''
       })
+    },
+    getQueryParams () {
+      let queryParams = ''
+      Object.keys(this.form).forEach((input, key) => {
+        const prefix = key !== 0 ? '&' : '?'
+        const value = this.form[input].value || ''
+        queryParams += `${prefix}${input}=${value}`
+      })
+      return queryParams
     }
   }
 }
