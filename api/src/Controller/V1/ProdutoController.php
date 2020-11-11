@@ -95,7 +95,7 @@ class ProdutoController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
+        $this->request->allowMethod(['delete']);
         $produto = $this->Produto->get($id);
         if ($this->Produto->delete($produto)) {
             $this->Flash->success(__('The produto has been deleted.'));
