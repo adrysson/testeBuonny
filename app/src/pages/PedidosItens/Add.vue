@@ -7,7 +7,6 @@
       <div class="flex row column">
         <q-form
           @submit="onSubmit"
-          @reset="onReset"
           class="q-gutter-md"
         >
           <q-select
@@ -105,11 +104,6 @@ export default {
         color: 'positive'
       })
       this.$router.push({ name: 'edit-pedido', params: { id: this.$route.params.id } })
-    },
-    onReset () {
-      Object.keys(this.form).forEach((input) => {
-        this.form[input] = ''
-      })
     },
     required (option) {
       if (!option.value || option.value === '') {
