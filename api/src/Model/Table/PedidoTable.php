@@ -103,7 +103,9 @@ class PedidoTable extends Table
 
     public function beforeFind(EventInterface $event, Query $query, ArrayObject $options, $primary)
     {
-        $query->select($this)
+        $query
+            ->contain('Cliente')
+            ->select($this)
             ->select($this->Cliente)
             ->select(['preco_total' => 'IFNULL(SUM(Produto.preco * PedidoItem.quantidade), 0)'])
             ->leftJoinWith('Produto')
