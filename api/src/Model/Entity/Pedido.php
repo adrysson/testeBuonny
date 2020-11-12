@@ -32,20 +32,4 @@ class Pedido extends Entity
         'cliente' => true,
         'pedido_item' => true,
     ];
-
-    protected $_virtual = ['preco_total'];
-
-    protected function _getPrecoTotal()
-    {
-        $query = TableRegistry::getTableLocator()->get('PedidoItem')->find('all', [
-            'conditions' => [
-                'pedido_id' => $this->id,
-            ],
-        ]);
-        $result = $query->select(['preco_total' => $query->contain('Produto')->func()->sum('Produto.preco')])->first();
-        if ($result->preco_total) {
-            return $result->preco_total;
-        }
-        return 0;
-    }
 }

@@ -27,23 +27,21 @@ class PedidoController extends AppController
         $pedidos = $this->Pedido->find('search', [
             'contain' => ['Cliente'],
             'search' => $params,
-        ]);
+        ])
+            ->select($this->Pedido)
+            ->select($this->Pedido->Cliente)
+            ->select(['preco_total' => 'SUM(Produto.preco)'])
+            ->leftJoinWith('Produto')
+            ->group('Pedido.id');
 
         // Filtro pra valor mínimo e máximo (para cliente está na model)
         if ((isset($params['valor_min']) && !empty($params['valor_min'])) || (isset($params['valor_max']) && !empty($params['valor_max']))) {
-            $pedidos = $pedidos->filter(function (Pedido $pedido) use ($params) {
-                if (isset($params['valor_min']) && !empty($params['valor_min'])) {
-                    if ($pedido->preco_total < $params['valor_min']) {
-                        return false;
-                    }
-                }
-                if (isset($params['valor_max']) && !empty($params['valor_max'])) {
-                    if ($pedido->preco_total > $params['valor_max']) {
-                        return false;
-                    }
-                }
-                return true;
-            });
+            if (isset($params['valor_min']) && !empty($params['valor_min'])) {
+                $pedidos->having(['preco_total >=' => $params['valor_min']]);
+            }
+            if (isset($params['valor_max']) && !empty($params['valor_max'])) {
+                $pedidos->having(['preco_total <=' => $params['valor_max']]);
+            }
         };
 
         $this->set(compact('pedidos'));
