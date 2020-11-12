@@ -34,7 +34,7 @@
                   {{ props.row.valor_total }}
                 </q-td>
                 <q-td key="acoes" :props="props">
-                  <q-btn label="Editar" class="q-mx-xs" color="secondary" :to="{name: 'edit-pedido', params:{ id: props.row.id }}" />
+                  <q-btn label="Editar" class="q-mx-xs" color="secondary" :to="{name: 'edit-item-pedido', params:{ id: props.row.itemId }}" />
                   <q-btn label="Excluir" class="q-mx-xs" color="negative" />
                 </q-td>
               </q-tr>
@@ -96,6 +96,7 @@ export default {
       return this.pedido.produtos.map((produto) => {
         return {
           id: produto.id,
+          itemId: produto._joinData.id,
           produto: produto.descricao,
           preco: `R$ ${this.formatPrice(produto.preco)}`,
           quantidade: produto._joinData.quantidade,

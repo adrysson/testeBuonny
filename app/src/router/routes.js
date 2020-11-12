@@ -13,7 +13,8 @@ const routes = [
     children: [
       { name: 'add-pedido', path: 'add', component: () => import('pages/Pedidos/Add.vue') },
       { name: 'edit-pedido', path: 'edit/:id', component: () => import('pages/Pedidos/Edit.vue') },
-      { name: 'add-item-pedido', path: ':id/itens-pedidos/add', component: () => import('pages/PedidosItens/Add.vue') }
+      { name: 'add-item-pedido', path: ':id/itens-pedidos/add', component: () => import('pages/PedidosItens/Add.vue') },
+      { name: 'edit-item-pedido', path: 'itens-pedidos/edit/:id', component: () => import('pages/PedidosItens/Edit.vue') }
     ]
   },
 
