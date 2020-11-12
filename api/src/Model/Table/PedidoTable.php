@@ -105,7 +105,7 @@ class PedidoTable extends Table
     {
         $query->select($this)
             ->select($this->Cliente)
-            ->select(['preco_total' => 'IFNULL(SUM(Produto.preco), 0)'])
+            ->select(['preco_total' => 'IFNULL(SUM(Produto.preco * PedidoItem.quantidade), 0)'])
             ->leftJoinWith('Produto')
             ->group('Pedido.id');
     }
