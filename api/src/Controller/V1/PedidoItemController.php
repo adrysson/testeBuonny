@@ -24,7 +24,7 @@ class PedidoItemController extends AppController
     public function view($id = null)
     {
         $item = $this->PedidoItem->get($id, [
-            'contain' => ['Pedido', 'Produto'],
+            'contain' => ['Pedido' => ['Cliente'], 'Produto'],
         ]);
 
         $this->set(compact('item'));
