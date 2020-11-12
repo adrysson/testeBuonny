@@ -55,7 +55,7 @@
               </q-td>
               <q-td key="acoes" :props="props">
                 <q-btn label="Editar" class="q-mx-xs" color="secondary" :to="{name: 'edit-pedido', params:{ id: props.row.id }}" />
-                <q-btn label="Excluir" class="q-mx-xs" color="negative" @click="remove(props.row.id)" />
+                <q-btn label="Excluir" class="q-mx-xs" color="negative" @click="removePedido(props.row.id)" />
               </q-td>
             </q-tr>
           </template>
@@ -164,7 +164,7 @@ export default {
       const val = (value / 1).toFixed(2).replace('.', ',')
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
     },
-    async remove (id) {
+    async removePedido (id) {
       if (confirm('Você tem certeza que deseja excluir o pedido?')) {
         const response = await this.$axios.delete(`/pedidos/${id}`)
         this.$q.notify({
@@ -176,7 +176,6 @@ export default {
         this.getPedidos()
       }
     }
-
   }
 }
 </script>

@@ -83,7 +83,7 @@ export default {
     formData () {
       return {
         produto_id: this.form.produto_id.value,
-        quantidade: this.form.quantidade
+        quantidade: parseInt(this.form.quantidade)
       }
     }
   },

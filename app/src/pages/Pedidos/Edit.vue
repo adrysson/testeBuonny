@@ -35,7 +35,7 @@
                 </q-td>
                 <q-td key="acoes" :props="props">
                   <q-btn label="Editar" class="q-mx-xs" color="secondary" :to="{name: 'edit-item-pedido', params:{ id: props.row.itemId }}" />
-                  <q-btn label="Excluir" class="q-mx-xs" color="negative" />
+                  <q-btn label="Excluir" class="q-mx-xs" color="negative" @click="removeItem(props.row.itemId)" />
                 </q-td>
               </q-tr>
             </template>
@@ -106,13 +106,27 @@ export default {
     }
   },
   async mounted () {
-    const response = await this.$axios.get(`/pedidos/${this.$route.params.id}`)
-    this.pedido = response.data.pedido
+    await this.getPedido()
   },
   methods: {
+    async getPedido () {
+      const response = await this.$axios.get(`/pedidos/${this.$route.params.id}`)
+      this.pedido = response.data.pedido
+    },
     formatPrice (value) {
       const val = (value / 1).toFixed(2).replace('.', ',')
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+    },
+    async removeItem (id) {
+      if (confirm('Você tem certeza que deseja excluir o item do pedido?')) {
+        const response = await this.$axios.delete(`/pedidos-itens/${id}`)
+        this.$q.notify({
+          position: 'top',
+          message: response.data || 'Item do pedido excluído com sucesso',
+          color: 'warning'
+        })
+        this.getPedido()
+      }
     }
   }
 }

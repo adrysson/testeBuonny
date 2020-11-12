@@ -84,7 +84,7 @@ export default {
       return {
         pedido_id: this.$route.params.id,
         produto_id: this.form.produto_id.value,
-        quantidade: this.form.quantidade
+        quantidade: parseInt(this.form.quantidade)
       }
     }
   },
