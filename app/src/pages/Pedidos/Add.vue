@@ -19,7 +19,7 @@
       <div class="row justify-center">
         <q-btn label="Salvar" type="submit" color="primary" />
         <q-btn
-          :to="{ name: 'index-pedidos' }"
+          :to="{ name: 'index-pedido' }"
           label="Voltar"
           type="reset"
           color="primary"
@@ -72,7 +72,7 @@ export default {
         message: response.data,
         color: 'positive'
       })
-      this.$router.push({ name: 'index-pedidos' })
+      this.$router.push({ name: 'index-pedido' })
     },
     onReset () {
       Object.keys(this.form).forEach((input) => {
