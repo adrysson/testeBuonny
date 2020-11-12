@@ -3,33 +3,37 @@
     <div class="row justify-center">
       <h1 class="text-h4">Pedidos</h1>
     </div>
-    <q-form
-      @submit="onSubmit"
-      @reset="onReset"
-      class="q-gutter-md"
-    >
-      <q-select
-        outlined
-        v-model="form.cliente_id"
-        :options="options"
-        label="Clientes"
-        class="q-ma-sm"
-      />
-      <div class="flex flex-center">
-        <q-input filled type="number" v-model="form.valor_min" label="Valor" class="q-ma-sm" />
-        <q-input filled type="number" v-model="form.valor_max" label="Até" class="q-ma-sm" />
+    <div class="row justify-center q-mt-lg">
+      <div class="flex row column">
+        <q-form
+          @submit="onSubmit"
+          @reset="onReset"
+          class="q-gutter-md"
+        >
+          <q-select
+            outlined
+            v-model="form.cliente_id"
+            :options="options"
+            label="Clientes"
+            class="q-ma-sm"
+          />
+          <div class="flex flex-center">
+            <q-input filled type="number" v-model="form.valor_min" label="Valor" class="q-ma-sm" />
+            <q-input filled type="number" v-model="form.valor_max" label="Até" class="q-ma-sm" />
+          </div>
+          <div class="row justify-center">
+            <q-btn label="Pesquisar" type="submit" color="primary" />
+            <q-btn
+              label="Limpar"
+              type="reset"
+              color="primary"
+              flat
+              class="q-ml-sm"
+            />
+          </div>
+        </q-form>
       </div>
-      <div class="row justify-center">
-        <q-btn label="Pesquisar" type="submit" color="primary" />
-        <q-btn
-          label="Limpar"
-          type="reset"
-          color="primary"
-          flat
-          class="q-ml-sm"
-        />
-      </div>
-    </q-form>
+    </div>
     <div class="row justify-center q-mt-lg">
       <div v-if="formSubmit" class="flex row column items-end">
         <q-btn label="Adicionar" :to="{name: 'add-pedido'}" class="q-mb-md" color="primary" />

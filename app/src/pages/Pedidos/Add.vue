@@ -3,37 +3,41 @@
     <div class="row justify-center">
       <h1 class="text-h4">Adicionar pedido</h1>
     </div>
-    <q-form
-      @submit="onSubmit"
-      @reset="onReset"
-      class="q-gutter-md"
-    >
-      <q-select
-        outlined
-        v-model="form.cliente_id"
-        :options="options"
-        label="Cliente"
-        class="q-ma-sm"
-        :rules="[required]"
-      />
-      <div class="row justify-center">
-        <q-btn label="Salvar" type="submit" color="primary" />
-        <q-btn
-          :to="{ name: 'index-pedido' }"
-          label="Voltar"
-          type="reset"
-          color="primary"
-          flat
-          class="q-ml-sm"
-        />
+    <div class="row justify-center q-mt-lg">
+      <div class="flex row column">
+        <q-form
+          @submit="onSubmit"
+          @reset="onReset"
+          class="q-gutter-md"
+        >
+          <q-select
+            outlined
+            v-model="form.cliente_id"
+            :options="options"
+            label="Cliente"
+            class="q-ma-sm"
+            :rules="[required]"
+          />
+          <div class="row justify-center">
+            <q-btn label="Salvar" type="submit" color="primary" />
+            <q-btn
+              :to="{ name: 'index-pedido' }"
+              label="Voltar"
+              type="reset"
+              color="primary"
+              flat
+              class="q-ml-sm"
+            />
+          </div>
+        </q-form>
       </div>
-    </q-form>
+    </div>
   </q-page>
 </template>
 
 <script>
 export default {
-  name: 'PageIndex',
+  name: 'PedidosAdd',
   data () {
     return {
       form: {
