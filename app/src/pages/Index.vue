@@ -30,6 +30,35 @@
         />
       </div>
     </q-form>
+    <div class="row justify-center q-mt-lg">
+      <q-table
+        :data="dataTable"
+        :columns="columns"
+        row-key="name"
+        v-if="formSubmit"
+      >
+        <template v-slot:body="props">
+          <q-tr :props="props">
+            <q-td key="id" :props="props">
+              {{ props.row.id }}
+            </q-td>
+            <q-td key="cliente" :props="props">
+              {{ props.row.cliente }}
+            </q-td>
+            <q-td key="valor_total" :props="props">
+              {{ props.row.valor_total }}
+            </q-td>
+            <q-td key="acoes" :props="props">
+              <q-btn label="Editar" class="q-mx-xs" color="secondary" />
+              <q-btn label="Excluir" class="q-mx-xs" color="negative" />
+            </q-td>
+          </q-tr>
+        </template>
+      </q-table>
+      <span v-else>
+        Realize uma pesquisa para visualizar os pedidos
+      </span>
+    </div>
   </q-page>
 </template>
 
@@ -48,7 +77,20 @@ export default {
       },
       clientes: [],
       pedidos: [],
-      formSubmit: false
+      formSubmit: false,
+      columns: [
+        {
+          name: 'id',
+          required: true,
+          label: 'ID',
+          align: 'left',
+          field: 'id',
+          sortable: true
+        },
+        { name: 'cliente', align: 'center', label: 'Cliente', field: 'cliente', sortable: true },
+        { name: 'valor_total', label: 'Valor total', field: 'valor_total', sortable: true },
+        { name: 'acoes', label: 'Ações', field: 'acoes' }
+      ]
     }
   },
   computed: {
@@ -64,6 +106,16 @@ export default {
         }
       })
       return options.concat(clientes)
+    },
+    dataTable () {
+      console.log(this.pedidos)
+      return this.pedidos.map((pedido) => {
+        return {
+          id: pedido.id,
+          cliente: pedido.cliente.nome,
+          valor_total: `R$ ${this.formatPrice(pedido.preco_total)}`
+        }
+      })
     }
   },
   async mounted () {
@@ -86,10 +138,20 @@ export default {
       let queryParams = ''
       Object.keys(this.form).forEach((input, key) => {
         const prefix = key !== 0 ? '&' : '?'
-        const value = this.form[input].value || ''
+        const value = this.getValueInput(this.form[input])
         queryParams += `${prefix}${input}=${value}`
       })
       return queryParams
+    },
+    getValueInput (formInput) {
+      if (typeof formInput.value === 'undefined') {
+        return formInput || ''
+      }
+      return formInput.value
+    },
+    formatPrice (value) {
+      const val = (value / 1).toFixed(2).replace('.', ',')
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
     }
   }
 }
