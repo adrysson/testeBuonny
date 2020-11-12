@@ -27,12 +27,7 @@ class PedidoController extends AppController
         $pedidos = $this->Pedido->find('search', [
             'contain' => ['Cliente'],
             'search' => $params,
-        ])
-            ->select($this->Pedido)
-            ->select($this->Pedido->Cliente)
-            ->select(['preco_total' => 'SUM(Produto.preco)'])
-            ->leftJoinWith('Produto')
-            ->group('Pedido.id');
+        ]);
 
         // Filtro pra valor mínimo e máximo (para cliente está na model)
         if ((isset($params['valor_min']) && !empty($params['valor_min'])) || (isset($params['valor_max']) && !empty($params['valor_max']))) {

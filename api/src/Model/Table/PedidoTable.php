@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use ArrayObject;
+use Cake\Event\EventInterface;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -97,5 +99,14 @@ class PedidoTable extends Table
         $rules->add($rules->existsIn(['cliente_id'], 'Cliente'), ['errorField' => 'cliente_id']);
 
         return $rules;
+    }
+
+    public function beforeFind(EventInterface $event, Query $query, ArrayObject $options, $primary)
+    {
+        $query->select($this)
+            ->select($this->Cliente)
+            ->select(['preco_total' => 'IFNULL(SUM(Produto.preco), 0)'])
+            ->leftJoinWith('Produto')
+            ->group('Pedido.id');
     }
 }
