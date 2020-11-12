@@ -31,30 +31,32 @@
       </div>
     </q-form>
     <div class="row justify-center q-mt-lg">
-      <q-table
-        :data="dataTable"
-        :columns="columns"
-        row-key="name"
-        v-if="formSubmit"
-      >
-        <template v-slot:body="props">
-          <q-tr :props="props">
-            <q-td key="id" :props="props">
-              {{ props.row.id }}
-            </q-td>
-            <q-td key="cliente" :props="props">
-              {{ props.row.cliente }}
-            </q-td>
-            <q-td key="valor_total" :props="props">
-              {{ props.row.valor_total }}
-            </q-td>
-            <q-td key="acoes" :props="props">
-              <q-btn label="Editar" class="q-mx-xs" color="secondary" />
-              <q-btn label="Excluir" class="q-mx-xs" color="negative" />
-            </q-td>
-          </q-tr>
-        </template>
-      </q-table>
+      <div v-if="formSubmit" class="flex row column items-end">
+        <q-btn label="Adicionar" :to="{name: 'add-pedidos'}" class="q-mb-md" color="primary" />
+        <q-table
+          :data="dataTable"
+          :columns="columns"
+          row-key="name"
+        >
+          <template v-slot:body="props">
+            <q-tr :props="props">
+              <q-td key="id" :props="props">
+                {{ props.row.id }}
+              </q-td>
+              <q-td key="cliente" :props="props">
+                {{ props.row.cliente }}
+              </q-td>
+              <q-td key="valor_total" :props="props">
+                {{ props.row.valor_total }}
+              </q-td>
+              <q-td key="acoes" :props="props">
+                <q-btn label="Editar" class="q-mx-xs" color="secondary" />
+                <q-btn label="Excluir" class="q-mx-xs" color="negative" />
+              </q-td>
+            </q-tr>
+          </template>
+        </q-table>
+      </div>
       <span v-else>
         Realize uma pesquisa para visualizar os pedidos
       </span>
@@ -108,7 +110,6 @@ export default {
       return options.concat(clientes)
     },
     dataTable () {
-      console.log(this.pedidos)
       return this.pedidos.map((pedido) => {
         return {
           id: pedido.id,

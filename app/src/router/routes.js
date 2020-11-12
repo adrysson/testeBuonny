@@ -4,7 +4,14 @@ const routes = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Index.vue') }
+      { name: 'index-pedidos', path: '', component: () => import('pages/Index.vue') }
+    ]
+  },
+  {
+    path: '/pedidos',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { name: 'add-pedidos', path: 'add', component: () => import('pages/Pedidos/Add.vue') }
     ]
   },
 
