@@ -44,6 +44,23 @@ class PedidoController extends AppController
     }
 
     /**
+     * View method
+     *
+     * @param string|null $id Pedido id.
+     * @return \Cake\Http\Response|null|void Renders view
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function view($id = null)
+    {
+        $pedido = $this->Pedido->get($id, [
+            'contain' => ['Cliente', 'Produto'],
+        ]);
+
+        $this->set(compact('pedido'));
+        $this->viewBuilder()->setOption('serialize', ['pedido']);
+    }
+
+    /**
      * Add method
      *
      * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
