@@ -19,6 +19,7 @@
       <div class="row justify-center">
         <q-btn label="Salvar" type="submit" color="primary" />
         <q-btn
+          :to="{ name: 'index-pedidos' }"
           label="Voltar"
           type="reset"
           color="primary"
