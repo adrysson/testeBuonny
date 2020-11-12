@@ -32,7 +32,7 @@
     </q-form>
     <div class="row justify-center q-mt-lg">
       <div v-if="formSubmit" class="flex row column items-end">
-        <q-btn label="Adicionar" :to="{name: 'add-pedidos'}" class="q-mb-md" color="primary" />
+        <q-btn label="Adicionar" :to="{name: 'add-pedido'}" class="q-mb-md" color="primary" />
         <q-table
           :data="dataTable"
           :columns="columns"
@@ -50,8 +50,8 @@
                 {{ props.row.valor_total }}
               </q-td>
               <q-td key="acoes" :props="props">
-                <q-btn label="Editar" class="q-mx-xs" color="secondary" />
-                <q-btn label="Excluir" class="q-mx-xs" color="negative" />
+                <q-btn label="Editar" class="q-mx-xs" color="secondary" :to="{name: 'edit-pedido', params:{ id: props.row.id }}" />
+                <q-btn label="Excluir" class="q-mx-xs" color="negative" @click="remove(props.row.id)" />
               </q-td>
             </q-tr>
           </template>
@@ -125,12 +125,18 @@ export default {
   },
   methods: {
     async onSubmit () {
+      await this.getPedidos()
+      this.formSubmit = true
+    },
+    async getPedidos () {
       const queryParams = this.getQueryParams()
       const response = await this.$axios.get(`/pedidos${queryParams}`)
       this.pedidos = response.data.pedidos
-      this.formSubmit = true
     },
     onReset () {
+      this.clearForm()
+    },
+    clearForm () {
       Object.keys(this.form).forEach((input) => {
         this.form[input] = ''
       })
@@ -153,7 +159,20 @@ export default {
     formatPrice (value) {
       const val = (value / 1).toFixed(2).replace('.', ',')
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+    },
+    async remove (id) {
+      if (confirm('Você tem certeza que deseja excluir o pedido?')) {
+        const response = await this.$axios.delete(`/pedidos/${id}`)
+        this.$q.notify({
+          position: 'top',
+          message: response.data || 'Pedido excluído com sucesso',
+          color: 'warning'
+        })
+        this.clearForm()
+        this.getPedidos()
+      }
     }
+
   }
 }
 </script>
